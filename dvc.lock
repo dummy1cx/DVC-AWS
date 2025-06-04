@@ -5,12 +5,15 @@ stages:
     deps:
     - path: src/data_ingestion.py
       hash: md5
-      md5: 2e73215f154fca09e4debd878c550e0a
-      size: 2887
+      md5: 96cf6fe2a8269ee9fa814118a6b94dbc
+      size: 3538
+    params:
+      params.yaml:
+        data_ingestion.test_size: 0.15
     outs:
     - path: data/raw
       hash: md5
-      md5: 6a4d11ab83c20d7412f4696595c0b4d1.dir
+      md5: 97961f893362ed56dad75426638e8648.dir
       size: 479272
       nfiles: 2
   data_preprocessing:
@@ -41,44 +44,51 @@ stages:
       nfiles: 2
     - path: src/feature_engineering.py
       hash: md5
-      md5: a8cb80b16ccef4ca0b0fe1ae1230a61d
-      size: 3173
+      md5: 55c838f8b9b24bdf96f0bf4a576fbf73
+      size: 3798
+    params:
+      params.yaml:
+        feature_engineering.max_features: 35
     outs:
     - path: data/processed
       hash: md5
-      md5: 8e226cbb00d50b11415bda87b3504894.dir
-      size: 21502462
+      md5: 6f393d613e1ef6777f08947b3ebd8e7e.dir
+      size: 829484
       nfiles: 2
   model_building:
     cmd: python src/model_building.py
     deps:
     - path: data/processed
       hash: md5
-      md5: 8e226cbb00d50b11415bda87b3504894.dir
-      size: 21502462
+      md5: 6f393d613e1ef6777f08947b3ebd8e7e.dir
+      size: 829484
       nfiles: 2
     - path: src/model_building.py
       hash: md5
-      md5: fc690effaefb045b2c5d823789a499f6
-      size: 3395
+      md5: 17ca7834783a6b2822184e114c2d9980
+      size: 4287
+    params:
+      params.yaml:
+        model_building.n_estimators: 22
+        model_building.random_state: 2
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: a99dd15374eaa3923e1c7cb4de110078
-      size: 7822912
+      md5: d63683b3963c1bb7986a8be22752acf9
+      size: 720181
   model_evaluation:
     cmd: python src/model_evaluation.py
     deps:
     - path: models/model.pkl
       hash: md5
-      md5: a99dd15374eaa3923e1c7cb4de110078
-      size: 7822912
+      md5: d63683b3963c1bb7986a8be22752acf9
+      size: 720181
     - path: src/model_evaluation.py
       hash: md5
-      md5: 5125464fabef4640d394034899a931bf
-      size: 3478
+      md5: efb1de9838f57b0e50862992a47805df
+      size: 4502
     outs:
     - path: reports/metrics.json
       hash: md5
-      md5: 0c5aa438d990e841c42ebbd86526423a
+      md5: 531c3ea7884f3b816aa2476453253e64
       size: 140
